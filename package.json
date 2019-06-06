@@ -1,0 +1,40 @@
+{
+  "name": "clothesthey",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "한재남 <hanjn2842@naver.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "aws-sdk": "^2.469.0",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "crypto": "^1.0.1",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.1",
+    "generaterr": "^1.5.0",
+    "helmet": "^3.18.0",
+    "mongoose": "^5.5.12",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.1",
+    "multer-s3": "^2.9.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^5.0.1"
+  },
+  "scripts": {
+    "start": "NODE_PATH=src nodemon --exec babel-node src/init.js"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.17.1"
+  }
+}

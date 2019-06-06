@@ -1,0 +1,11 @@
+쿠키에 user.id를 저장
+serializeIser( (user, done) => {
+  done(null, user.id)
+} )
+
+그 쿠키의 정보를 어떻게 사용자로 전환할 것인가?
+deserializeUser( (id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user)
+  })
+} )
