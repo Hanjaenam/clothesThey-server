@@ -9,6 +9,7 @@ const PATCH = '/patch';
 // post
 const POST = '/post';
 const ADD_LIKE = '/addLike/:id';
+const GET_LENGTH = '/length/:category';
 // post comment
 const P_COMMENT = '/pComment';
 // comment comment
@@ -30,6 +31,7 @@ const routes = {
   // POST
   post: POST,
   addLike: ADD_LIKE,
+  getLength: GET_LENGTH,
   pComment: P_COMMENT,
   cComment: C_COMMENT,
   read: READ,

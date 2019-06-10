@@ -26,13 +26,11 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: 'imageSrc is required',
   },
-  like: { type: Number, default: 0 },
-  creator: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
-  ],
+  like: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'PComment' }],
 });
 

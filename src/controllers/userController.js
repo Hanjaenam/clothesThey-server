@@ -1,27 +1,42 @@
 import passport from 'passport';
 import User from 'models/User';
-import Generaterr from 'generaterr';
 
-export const logIn = passport.authenticate('local');
+export const logIn = (req, res, next) => {
+  passport.authenticate('local-login', (err, user, info) => {
+    if (err) {
+      console.log(err.message);
+      return res.status(500).end(err.message);
+    }
+    if (info) {
+      console.log(info.message);
+      return res.status(400).json(info.message);
+    }
+    req.login(user, _err => {
+      if (_err) {
+        console.log(_err.message);
+        return res.status(500).end(_err.message);
+      }
+      return next();
+    });
+  })(req, res, next);
+};
 
-export const register = async (req, res, next) => {
-  const {
-    body: { email, password, confirmPassword },
-  } = req;
-  if (password !== confirmPassword) {
-    console.log(
-      new Generaterr(`${password} and ${confirmPassword} is diffrent`),
-    );
-    return res.status(400).end();
-  }
-  try {
-    const user = await new User({ email });
-    await User.register(user, password);
-    return next();
-  } catch (e) {
-    console.log(e);
-    return res.status(500).end();
-  }
+export const register = (req, res, next) => {
+  passport.authenticate('local-register', (err, user, info) => {
+    if (err) {
+      return res.status(500).end(err.message);
+    }
+    if (info) {
+      return res.status(400).json(info.message);
+    }
+    req.login(user, _err => {
+      if (_err) {
+        console.log(_err.message);
+        return res.status(500).end(_err.message);
+      }
+      return next();
+    });
+  })(req, res, next);
 };
 
 export const logOut = (req, res) => {
@@ -29,7 +44,7 @@ export const logOut = (req, res) => {
     req.logout();
     return res.status(200).end();
   }
-  return res.status(404).end();
+  return res.status(204).end();
 };
 
 export const patchUser = async (req, res) => {
@@ -50,9 +65,9 @@ export const patchUser = async (req, res) => {
 export const getUser = (req, res) => {
   if (req.user) {
     const {
-      user: { email, nickname },
+      user: { id, email, nickname },
     } = req;
-    return res.status(200).json({ email, nickname });
+    return res.status(200).json({ id, email, nickname });
   }
   return res.status(204).end();
 };

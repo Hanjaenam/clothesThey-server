@@ -13,7 +13,7 @@ const authRouter = express.Router();
 
 authRouter.post(routes.logIn, logIn, getUser);
 authRouter.get(routes.logOut, logOut);
-authRouter.post(routes.register, register, logIn, getUser);
+authRouter.post(routes.register, register, getUser);
 authRouter.get(routes.getUser, getUser);
 authRouter.patch(routes.patch, onlyPrivate, patchUser);
 

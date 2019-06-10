@@ -20,6 +20,7 @@ export const read = async (req, res) => {
             },
           })).posts
         : await Post.find({ category })
+            .populate({ path: 'creator', select: 'nickname' })
             .sort({ createdAt: -1 })
             .limit(LIMIT_PAGE)
             .skip((parseInt(page || 1, 10) - 1) * LIMIT_PAGE);
@@ -58,9 +59,27 @@ export const deletePost = async (req, res) => {
   } = req;
   try {
     await Post.findByIdAndRemove(id);
-    // req.user.post확인해볼것.
-    console.log(req.user);
-    return res.status(204);
+    req.user.posts.remove(id);
+    req.user.save();
+    return res.status(204).end();
+  } catch (e) {
+    console.log(e);
+    return res.status(500).end();
+  }
+};
+
+export const updatePost = async (req, res) => {
+  const {
+    body: { id, title, content },
+    file: { location },
+  } = req;
+  try {
+    const post = await Post.findById(id);
+    post.title = title;
+    post.content = content;
+    post.imageUrl = location;
+    post.save();
+    return res.status(200).json(post);
   } catch (e) {
     console.log(e);
     return res.status(500).end();
@@ -73,7 +92,7 @@ export const addLike = async (req, res) => {
   } = req;
   try {
     const post = await Post.findById(id);
-    post.like += 1;
+    post.like.push(req.user.id);
     post.save();
     return res.status(200).end();
   } catch (e) {
@@ -84,7 +103,7 @@ export const addLike = async (req, res) => {
 
 export const onlyMe = async (req, res, next) => {
   const {
-    params: { id },
+    body: { id },
   } = req;
   try {
     const post = await Post.findById(id);
@@ -96,5 +115,18 @@ export const onlyMe = async (req, res, next) => {
   } catch (e) {
     console.log(e);
     return res.status(500).end();
+  }
+};
+
+export const getLength = async (req, res) => {
+  const {
+    params: { category },
+  } = req;
+  try {
+    const post = await Post.find({ category });
+    return res.status(200).json(post.length);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).end(e.message);
   }
 };

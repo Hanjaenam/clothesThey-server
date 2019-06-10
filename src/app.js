@@ -10,7 +10,7 @@ import session from 'express-session';
 import userRouter from './routers/userRouter';
 import postRouter from './routers/postRouter';
 import routes from './routes';
-import './passport';
+import './_passport';
 
 dotenv.config();
 
@@ -29,11 +29,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use((req, res, next) => {
-  res.locals.test = 'test';
-  return next();
-});
 
 app.use(routes.user, userRouter);
 app.use(routes.post, postRouter);

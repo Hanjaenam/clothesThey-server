@@ -24,17 +24,17 @@ export const uploadPostImage = multerS3PostImage.single('postImage');
 
 export const deletePostImage = (req, res, next) => {
   const {
-    body: { location },
+    body: { key },
   } = req;
   const params = {
     Bucket: process.env.AWS_S3_BUCKET,
-    Key: `test/${location}`,
+    Key: `test/${key}`,
   };
   s3.deleteObject(params, (err, data) => {
     if (err) {
-      console.log(err);
       return res.end(500);
     }
+    res.locals.data = data;
     return next();
   });
 };
